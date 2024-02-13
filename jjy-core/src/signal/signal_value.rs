@@ -4,7 +4,7 @@ use std::{
 };
 
 /// 送信する信号の値。マーカー、0、1の3種類。
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SignalValue {
     Marker,
     Zero,

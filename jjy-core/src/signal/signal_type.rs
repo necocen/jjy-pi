@@ -1,7 +1,7 @@
 use std::fmt::{Display, Formatter, Result};
 
 /// 送信する信号の種別。Hour, Minute, Day, Year, DayOfWeekはBCD符号で送信するので、下から数えた桁数を指定する。
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SignalType {
     Marker,        // マーカー(M)
     Position(u8),  // ポジションマーカー(P1, P2, P3, P4, P5, P0)
