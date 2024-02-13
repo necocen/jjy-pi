@@ -8,3 +8,11 @@ pub fn bcd(n: u32, i: u8) -> u8 {
         1
     }
 }
+
+/// パリティ計算をする（nは99まで）
+pub fn parity(n: u32) -> u8 {
+    if n >= 100 {
+        panic!("n must be less than 100");
+    }
+    (0..8).map(|i| bcd(n, i)).sum::<u8>() % 2
+}
