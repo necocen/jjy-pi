@@ -1,14 +1,19 @@
 use std::time::Duration;
 
 use chrono::{Datelike as _, NaiveDateTime, Timelike as _};
-use signal::{SignalType, SignalValue};
+use signal::{Signal, SignalType, SignalValue};
 use utils::bcd;
 
 mod signal;
 mod utils;
 
+pub fn get_next_signal(now: NaiveDateTime) -> (Duration, Signal) {
+    let (sleep_time, next_second) = get_next_second(now);
+    (sleep_time, get_signal(next_second))
+}
+
 /// 次の秒と、それまでの時間を返す
-pub fn get_next_second(now: NaiveDateTime) -> (Duration, NaiveDateTime) {
+fn get_next_second(now: NaiveDateTime) -> (Duration, NaiveDateTime) {
     // 現在時刻の秒以下を切り捨てて次の秒を求める
     // うるう秒がある場合、最大2秒後になる（MM:60がある場合にMM:59に1秒加えるとMM+1:00まで飛ぶため）
     // FIXME: うるう秒の考慮はこの動作で問題ないのか？
@@ -18,7 +23,7 @@ pub fn get_next_second(now: NaiveDateTime) -> (Duration, NaiveDateTime) {
     ((next_second - now).to_std().unwrap(), next_second)
 }
 
-pub fn get_signal(now: NaiveDateTime) -> (SignalType, SignalValue) {
+fn get_signal(now: NaiveDateTime) -> Signal {
     let signal_type = SignalType::from(now.second() as u8);
     let signal_value = match signal_type {
         SignalType::Marker | SignalType::Position(_) => SignalValue::Marker,
@@ -50,5 +55,8 @@ pub fn get_signal(now: NaiveDateTime) -> (SignalType, SignalValue) {
         SignalType::Zero => SignalValue::Zero,
         _ => panic!("unexpected signal type: {:?}", signal_type),
     };
-    (signal_type, signal_value)
+    Signal {
+        signal_type,
+        signal_value,
+    }
 }

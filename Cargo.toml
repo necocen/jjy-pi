@@ -1,2 +1,3 @@
 [workspace]
 members = ["jjy-pi", "jjy-core"]
+resolver = "2"
