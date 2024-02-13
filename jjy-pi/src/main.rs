@@ -15,7 +15,7 @@ fn main() -> ! {
     loop {
         let now = Utc::now().with_timezone(&tz).naive_local();
         let (sleep_time, signal) = get_next_signal(now);
-        thread::sleep(sleep_time);
+        thread::sleep(sleep_time.to_std().unwrap());
         println!(
             "{} {:>4}: {}",
             Utc::now().with_timezone(&tz).format("%Y-%m-%d %H:%M:%S"),

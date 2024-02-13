@@ -1,26 +1,27 @@
 use std::time::Duration;
 
-use chrono::{Datelike as _, NaiveDateTime, Timelike as _};
+use chrono::{Datelike as _, NaiveDateTime, TimeDelta, Timelike as _};
 use signal::{Signal, SignalType, SignalValue};
 use utils::bcd;
 
 mod signal;
 mod utils;
 
-pub fn get_next_signal(now: NaiveDateTime) -> (Duration, Signal) {
+/// 次の秒までスリープすべき時間と、その秒の信号を返す
+pub fn get_next_signal(now: NaiveDateTime) -> (TimeDelta, Signal) {
     let (sleep_time, next_second) = get_next_second(now);
     (sleep_time, get_signal(next_second))
 }
 
 /// 次の秒と、それまでの時間を返す
-fn get_next_second(now: NaiveDateTime) -> (Duration, NaiveDateTime) {
+fn get_next_second(now: NaiveDateTime) -> (TimeDelta, NaiveDateTime) {
     // 現在時刻の秒以下を切り捨てて次の秒を求める
     // うるう秒がある場合、最大2秒後になる（MM:60がある場合にMM:59に1秒加えるとMM+1:00まで飛ぶため）
     // FIXME: うるう秒の考慮はこの動作で問題ないのか？
     let nanos = now.timestamp_subsec_nanos();
     let last_second = now - Duration::from_nanos(nanos as u64);
     let next_second = last_second + Duration::from_secs(1);
-    ((next_second - now).to_std().unwrap(), next_second)
+    (next_second - now, next_second)
 }
 
 fn get_signal(now: NaiveDateTime) -> Signal {
