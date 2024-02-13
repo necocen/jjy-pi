@@ -1,4 +1,4 @@
-use std::fmt::{Display, Result};
+use std::fmt::{Display, Formatter, Result};
 
 /// 送信する信号の種別。Hour, Minute, Day, Year, DayOfWeekはBCD符号で送信するので、下から数えた桁数を指定する。
 #[derive(Debug, Clone, Copy)]
@@ -19,7 +19,7 @@ pub enum SignalType {
 }
 
 impl Display for SignalType {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         let bcd: [u8; 10] = [1, 2, 4, 8, 10, 20, 40, 80, 100, 200];
         let s = match self {
             SignalType::Marker => "M".to_string(),

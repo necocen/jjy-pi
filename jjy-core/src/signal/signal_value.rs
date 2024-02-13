@@ -1,5 +1,5 @@
 use std::{
-    fmt::{Display, Result},
+    fmt::{Display, Formatter, Result},
     time::Duration,
 };
 
@@ -22,7 +22,7 @@ impl SignalValue {
 }
 
 impl Display for SignalValue {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         match self {
             SignalValue::Marker => "M".fmt(f),
             SignalValue::Zero => "0".fmt(f),
