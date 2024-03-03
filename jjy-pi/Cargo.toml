@@ -9,5 +9,7 @@ edition = "2021"
 anyhow = "1.0.79"
 chrono = "0.4.33"
 chrono-tz = "0.8.5"
+embedded-graphics = "0.8.1"
 jjy-core = { path = "../jjy-core" }
 rppal = { version = "0.17.1", features = ["hal"] }
+ssd1306 = "0.8.4"
