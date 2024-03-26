@@ -16,3 +16,9 @@ cargo test -p jjy-core
 
 RasPiで動作させるためのバイナリクレートです。RasPiのクロックにあわせてGPIO4のLow/Highを切り替えます。  
 Highになっている間だけ40kHzの電波を出せば標準電波と同じになります。
+
+[cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild)があるとクロスコンパイルが容易です。
+
+```sh
+cargo zigbuild --target aarch64-unknown-linux-gnu --release
+```
